@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/colorcode.css">
+
+    <title>Build Status</title>
+  </head>
+  <body>
+    <div class="container">
+    </div>
+    <div class="container-lg">
+    <h1>Anthos DPE - Build Status</h1>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            {{ range $.dates }}
+            <th scope="col">{{ . }}</th>
+            {{end}}
+          </tr>
+        </thead>
+        <tbody>
+          {{ range $.repos }}
+          <tr  scope="row">
+            <td><a href={{ .Link }}>{{ .Name }}</a></td>
+            {{ range  .Builds }}
+            <td class="{{ .Status }}"><a href="{{ .Url }}">{{ .Status }}</a></td>
+            {{end}}
+        </tr>
+        {{end}}
+      </tbody>
+      </table>
+    </div>
+  </body>
+</html>

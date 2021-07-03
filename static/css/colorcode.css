@@ -1,0 +1,15 @@
+td.success {
+    background: #4df758; 
+}
+
+td.failure {
+    background: #ff6161; 
+}
+
+td.pending {
+    background: #fffa91; 
+}
+
+td.unknown {
+    background: #dbdbdb; 
+}

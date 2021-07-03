@@ -1,0 +1,7 @@
+dayhistory: 7
+githubtoken: ""
+
+repos:
+- name: "microservices-demo"
+  owner: "GoogleCloudPlatform"
+  defaultbranch: "master"
