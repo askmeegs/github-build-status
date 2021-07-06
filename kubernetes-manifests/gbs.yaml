@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gbs
+spec:
+  selector:
+    matchLabels:
+      app: gbs
+  template:
+    metadata:
+      labels:
+        app: gbs
+    spec:
+      serviceAccountName: gbs-ksa
+      containers:
+      - name: gbs
+        image: gcr.io/github-build-status/gbs:v0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: "gbs-repo-config"
+          mountPath: "/tmp/sample-config.yml"
+          subPath: "sample-config.yml"
+        env:
+        - name: REDIS_ADDR 
+          value: "redis:6379"
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-token
+              key: token
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 300m
+          requests:
+            cpu: 250m
+            memory: 400Mi
+      volumes:
+        - name: github-token
+          secret:
+            secretName: github-token
+        - name: "gbs-repo-config"
+          configMap:
+            name: "gbs-repo-config"

@@ -7,6 +7,8 @@ require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/foolin/gin-template v0.0.0-20190415034731-41efedfb393b // indirect
 	github.com/gin-gonic/gin v1.7.2 // indirect
+	github.com/go-redis/redis/v8 v8.11.0 // indirect
+	github.com/gomodule/redigo v1.8.5 // indirect
 	github.com/google/go-github/v36 v36.0.0 // indirect
 	github.com/jinzhu/configor v1.2.1 // indirect
 	github.com/kataras/tablewriter v0.0.0-20180708051242-e063d29b7c23 // indirect

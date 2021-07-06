@@ -13,3 +13,14 @@ td.pending {
 td.unknown {
     background: #dbdbdb; 
 }
+
+a.github-sha {
+    font-family: monospace; 
+    font-size: 0.9rem;
+}
+
+div.ui-container {
+    padding-top: 4rem;
+    padding-left: 2rem;  
+    width: 50%;
+}

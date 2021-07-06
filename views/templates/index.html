@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/colorcode.css">
+    <link rel="stylesheet" href="/static/css/custom.css">
 
     <title>Build Status</title>
   </head>
   <body>
-    <div class="container">
-    </div>
-    <div class="container-lg">
+    <div class="container-md ui-container">
     <h1>Anthos DPE - Build Status</h1>
 
     <table class="table">
@@ -30,7 +28,7 @@
           <tr  scope="row">
             <td><a href={{ .Link }}>{{ .Name }}</a></td>
             {{ range  .Builds }}
-            <td class="{{ .Status }}"><a href="{{ .Url }}">{{ .Status }}</a></td>
+            <td class="{{ .Status }}"><a href="{{ .Url }}" class="github-sha">{{ .Sha }}</a></td>
             {{end}}
         </tr>
         {{end}}
