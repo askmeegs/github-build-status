@@ -8,10 +8,15 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-FROM alpine AS release
-RUN apk add --no-cache ca-certificates
+RUN go build -o /go/bin/github-build-status .
+
+FROM alpine as release
+RUN apk add --no-cache ca-certificates \
+    busybox-extras net-tools bind-tools
 WORKDIR /src
-COPY --from=builder /github-build-status ./gbs
+COPY --from=builder /go/bin/github-build-status /src/server
+COPY ./views ./views
+COPY ./static ./static
 
 EXPOSE 8080
-ENTRYPOINT ["/src/gbs"]
+ENTRYPOINT ["/src/server"]

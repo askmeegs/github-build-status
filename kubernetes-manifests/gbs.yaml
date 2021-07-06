@@ -11,7 +11,6 @@ spec:
       labels:
         app: gbs
     spec:
-      serviceAccountName: gbs-ksa
       containers:
       - name: gbs
         image: gcr.io/github-build-status/gbs:v0.0.1
@@ -44,3 +43,16 @@ spec:
         - name: "gbs-repo-config"
           configMap:
             name: "gbs-repo-config"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gbs
+spec:
+  type: LoadBalancer
+  selector:
+    app: gbs
+  ports:
+  - name: gbs
+    port: 80
+    targetPort: 8080

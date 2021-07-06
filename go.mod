@@ -1,4 +1,4 @@
-module github.com/askmeegs/ghactions-grid
+module github.com/askmeegs/github-build-status
 
 go 1.16
 

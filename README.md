@@ -48,6 +48,10 @@ kubectl create configmap gbs-repo-config --from-file=`pwd`/sample-config.yml
 
 5. Deploy the Kubernetes Manifests to your GKE cluster. 
 
+```
+kubectl apply -f kubernetes-manifests
+```
+
 This will deploy the following: 
 - a **Redis Deployment** 
 - a **Redis Service** to that GBS can access Redis from inside the cluster 
@@ -61,10 +65,6 @@ kubectl get service gbs
 ```
 
 
-## Architecture 
-
-*TODO* 
-
 ## Notes 
 
 - The build status showed in the GBS status UI is a **composite status** created from all the "Checks" that have run on the default branch of that repo. If there are multiple checks, the status will be Successful only if all the checks are successful. If any of the Checks have failed, the overall status is Failed; if any Checks are still running, the overall status will show as Pending. The status is "unknown" if no builds ran on that day, for that repo. 
@@ -72,3 +72,4 @@ kubectl get service gbs
 - If you update your ConfigMap to include additional repos, and restart GBS, those new repos won't have historical data yet, and the build status for previous days will show up as "Unknown." 
 - GBS only displays the build status from the **last 7 days**.  
 - On startup, the GBS server looks for any Repo data in your Redis DB. If none is found, previous days will show up as 'unknown' and will be populated as time passes. The reason for this is the Github API doesn't support querying Checks based on date.
+- Right now the two ticker intervals (get from Github, write to Redis) are hardcoded. GBS gets from Github every **20 seconds** and writes to Redis every **60 seconds.** Github has rate limits (5K queries per hour)
