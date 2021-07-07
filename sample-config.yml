@@ -29,6 +29,3 @@ repos:
 - name: "nodejs-cloud-container"
   owner: "googleapis"
   defaultbranch: "master"
-- name: "test-repo-failing-status"
-  owner: "askmeegs"
-  defaultbranch: "main"
