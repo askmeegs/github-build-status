@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gbs-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: gbs-static-ip
+    networking.gke.io/managed-certificates: gbs-managed-cert3
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: gbs-nodeport
+      port:
+        number: 80

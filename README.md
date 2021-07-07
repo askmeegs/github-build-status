@@ -58,7 +58,7 @@ This will deploy the following:
 - a **GBS Deployment** containing a single GBS Pod. This Deployment is configured with your Github API token, repo ConfigMap, and your local Redis instance. 
 - a **GBS Service** to publicly expose the GBS UI for your instance. Note that GBS only queries public Github data (build status for public repos), and the UI is read-only - this is why the UI is publicly accessible by default. If you want to lock down access to your GBS instance, you can just delete this service and port-forward your GBS Pod. 
 
-6. Access the Github Build Status UI by getting the Service's LoadBalancer IP. 
+1. Access the Github Build Status UI by getting the Service's LoadBalancer IP. 
 
 ```
 kubectl get service gbs 
@@ -73,3 +73,50 @@ kubectl get service gbs
 - GBS only displays the build status from the **last 7 days**.  
 - On startup, the GBS server looks for any Repo data in your Redis DB. If none is found, previous days will show up as 'unknown' and will be populated as time passes. The reason for this is the Github API doesn't support querying Checks based on date.
 - Right now the two ticker intervals (get from Github, write to Redis) are hardcoded. GBS gets from Github every **20 seconds** and writes to Redis every **60 seconds.** Github has rate limits (5K queries per hour)
+
+
+## HTTPS UI with GKE Ingress
+
+These steps outline how to set up optional HTTPS Ingress for the GBS UI. **Note** - this setup requires a domain name that you own. 
+
+[See the GCP docs to learn more.](https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs#creating_an_ingress_with_a_google-managed_certificate)
+
+1. Delete the default GBS service type Loadbalancer.  
+
+```
+kubectl delete svc gbs
+```
+
+2. Create a Google Cloud static IP. 
+
+```
+gcloud compute addresses create gbs-static-ip --global
+```
+
+3. Get the `address` value of your static IP. 
+
+```
+gcloud compute addresses describe gbs-static-ip --global
+```
+
+4. Update your domain's A-Record to use that static IP value. 
+
+5. Populate `ingress/managed-cert.yaml` with your domain name. 
+
+6. Create a GKE ManagedCertificate resource. 
+
+```
+kubectl apply -f ingress/managed-cert.yaml
+```
+
+7. Create a Service of type NodePort for GBS. 
+
+```
+kubectl apply -f ingress/service-nodeport.yaml
+```
+
+8. Create an Ingress resource, mapped to your GBS Service, using your ManagedCertificate resource for TLS. 
+
+```
+kubectl apply -f ingress/ingress.yaml
+```
